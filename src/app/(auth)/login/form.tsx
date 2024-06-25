@@ -1,12 +1,12 @@
 "use client"
 
+import { FormFieldslogin, schemaLogin, response } from "@/app/auth/definitions";
+import ButtonSubmit from "@/app/components/button";
+import InputField from "@/app/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { FormFieldslogin, schemaLogin, response } from "../auth/definitions";
-import InputField from "../components/input";
-import ButtonSubmit from "../components/button";
 
 const FormLogin = () => {
     const {

@@ -64,7 +64,7 @@ const CheckUserExist = ({ username }: { username: string }) => {
 
     return (
         <button onClick={() => router.push("/login")}
-            className="text-lg text-white font-medium py-1 px-3 border bg-zinc-800 hover:bg-zinc-900 border-zinc-800 rounded-lg">
+            className="text-lg text-white font-medium px-3 border bg-zinc-800 hover:bg-zinc-900 border-zinc-800 rounded-lg">
             Log in
         </button>
     )

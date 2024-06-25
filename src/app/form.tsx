@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import ButtonStatus from "./components/dashboard/buttonSubmit"
 import SelectSocialMedia from "./components/dashboard/selectSocialMedia"
-import { typeResponse } from "./auth/definitions"
+import { response, requestBookmarks } from "./auth/definitions"
 import { InstagramEmbed, YouTubeEmbed, TikTokEmbed } from "react-social-media-embed"
 import { Spotify } from "react-spotify-embed"
 import { TweetPage } from "./components/dashboard/configSocialMedia"
@@ -11,7 +11,6 @@ import { ErrorLink } from "./components/dashboard/text"
 import { SelectCatergory } from "./components/dashboard/selectCategory"
 
 interface statusForm {
-    username: string;
     status: boolean;
 }
 
@@ -20,7 +19,7 @@ interface typeCategory {
     media: JSX.Element;
 }
 
-export const FormInput = ({ username, status }: statusForm) => {
+export const FormInput = ({ status }: statusForm) => {
     const [sosmed, setSosmed] = useState('tw')
     const [url, setUrl] = useState('')
     const [category, setCategory] = useState('#')
@@ -66,18 +65,30 @@ export const FormInput = ({ username, status }: statusForm) => {
 
     }, [url, sosmed])
 
-    const onSubmit = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-
-        const responseData: typeResponse = {
-            username: username,
+    const onSubmit = async () => {
+        const responseData: requestBookmarks = {
             social: sosmed,
             url: url,
             category: category
         }
 
-        let format = JSON.stringify(responseData)
-        alert(format)
+        try {
+            const response = await fetch("http://localhost:8000/bookmark/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(responseData),
+                credentials: "include"
+            })
+            if (!response.ok) {
+                const errorData: response = await response.json()
+                throw new Error(JSON.stringify(errorData))
+            }
+        } catch (error) {
+            const errorMessage = (JSON.parse((error as Error).message) as response).Message;
+            alert(errorMessage)
+        }
     }
 
     return (

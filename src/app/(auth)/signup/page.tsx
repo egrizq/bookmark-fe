@@ -1,11 +1,8 @@
-import NavBar from "../components/navbar";
 import FormSignUp from "./form";
 
 export default function SignUp() {
     return (
         <>
-            <NavBar />
-
             <div className="container mx-auto space-y-3 pt-14 items-center">
                 <div className="flex justify-center pb-10">
 

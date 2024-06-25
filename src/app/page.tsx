@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { response } from "./auth/definitions";
 import { Title } from "./components/dashboard/text";
 import CheckUserExist from "./components/dashboard/checkUserExist";
 import { FormInput } from "./form";
@@ -11,25 +10,23 @@ export default function Main() {
     const [status, setStatus] = useState<boolean>(false)
 
     useEffect(() => {
-        const checkUser = async () => {
-            try {
-                const response = await fetch("http://localhost:8000/page/main", {
-                    method: "GET",
-                    credentials: "include",
-                })
-                if (response.ok) {
-                    const res: response = await response.json()
-                    const { Message } = res
-
-                    setUsername(Message)
-                    setStatus(true)
+        fetch("http://localhost:8000/bookmark/page", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (res.ok) {
+                    const user = res.json()
+                    return user
                 }
-            } catch (error) {
+            })
+            .then((user) => {
+                setUsername(user.Message)
+                setStatus(true)
+            })
+            .catch((e) => {
                 // pass
-            }
-        }
-
-        checkUser();
+            })
     }, [])
 
     return (
@@ -47,10 +44,7 @@ export default function Main() {
 
                         <Title />
 
-                        <FormInput
-                            username={username}
-                            status={status}
-                        />
+                        <FormInput status={status} />
 
                     </div>
                 </div>

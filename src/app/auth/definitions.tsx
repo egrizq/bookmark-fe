@@ -12,7 +12,7 @@ export type FormFieldslogin = z.infer<typeof schemaLogin>;
 // todo add category
 
 export const schemaCategory = z.object({
-    input: z.string().min(5)
+    newcategory: z.string().min(2, { message: "Setidaknya 2 karakter untuk penamaan" })
 })
 
 export type FormFieldsCategory = z.infer<typeof schemaCategory>;
@@ -44,8 +44,9 @@ export interface response {
     Message: string
 }
 
-export interface typeResponse {
-    username: string
+// todo add bookmarks
+
+export interface requestBookmarks {
     social: string
     url: string
     category: string
