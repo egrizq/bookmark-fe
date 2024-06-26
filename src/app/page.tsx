@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Title } from "./components/dashboard/text";
 import CheckUserExist from "./components/dashboard/checkUserExist";
 import { FormInput } from "./form";
+import ListBookmarkByCategory from "./components/dashboard/listBookmarkByCategory";
 
 export default function Main() {
     const [username, setUsername] = useState<string>('')
@@ -38,7 +39,7 @@ export default function Main() {
                 </div>
             </nav>
 
-            <main className="container mx-auto pt-20 text-zinc-800">
+            <main className="container mx-auto pt-20 py-10 text-zinc-800">
                 <div className="flex justify-center">
                     <div className="flex flex-col w-6/12">
 
@@ -46,6 +47,10 @@ export default function Main() {
 
                         <FormInput status={status} />
 
+                        <ListBookmarkByCategory
+                            status={status}
+                            username={username}
+                        />
                     </div>
                 </div>
             </main>
