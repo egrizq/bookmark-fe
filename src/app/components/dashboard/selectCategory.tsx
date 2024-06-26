@@ -8,7 +8,11 @@ interface typeCategory {
     setValue: ChangeEventHandler<HTMLSelectElement>;
 }
 
-const Option = ({ setVal }: { setVal: ChangeEventHandler<HTMLSelectElement> }) => {
+interface typeOption {
+    setVal: ChangeEventHandler<HTMLSelectElement>
+}
+
+const Option = ({ setVal }: typeOption) => {
     const [category, setCategory] = useState<string[]>([]);
 
     useEffect(() => {
@@ -88,14 +92,14 @@ const SelectCatergory = ({ status, setValue }: typeCategory) => {
             <>
                 <form className="flex justify-center pt-7 w-full" onSubmit={handleSubmit(onSubmit)} >
                     <div className="flex">
-                        {addCategory! ?
-                            <button type="button" onClick={() => isAddCategory(!addCategory)} // false
-                                className="p-2  border-t border-l border-b border-zinc-300 hover:bg-zinc-200 rounded-l-md">
-                                +
-                            </button> : <button type="button" onClick={() => isAddCategory(!addCategory)}
-                                className="p-2 border-t border-l border-b border-zinc-300 hover:bg-red-700 hover:text-white rounded-l-md">
-                                x
-                            </button>}
+                        <button
+                            type="button"
+                            onClick={() => isAddCategory(!addCategory)}
+                            className={`p-2  border-t border-l border-b border-zinc-300 
+                                ${addCategory ? "hover:bg-zinc-200 rounded-l-md" :
+                                    "hover:bg-red-700 hover:text-white rounded-l-md"}`}>
+                            {addCategory ? "+" : "x"}
+                        </button>
                     </div>
 
                     <div className="flex w-5/12">
