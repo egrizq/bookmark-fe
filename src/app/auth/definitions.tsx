@@ -12,7 +12,8 @@ export type FormFieldslogin = z.infer<typeof schemaLogin>;
 // todo add category
 
 export const schemaCategory = z.object({
-    newcategory: z.string().min(2, { message: "Setidaknya 2 karakter untuk penamaan" })
+    newcategory: z.string().min(2, { message: "Minimal 2 karakter untuk penamaan" })
+        .max(15, { message: "Maksimal 15 karakter untuk penamaan" }).toLowerCase()
 })
 
 export type FormFieldsCategory = z.infer<typeof schemaCategory>;
@@ -25,7 +26,7 @@ export const schemaSignUp = z.object({
     password: z.string().min(8),
     passwordConf: z.string().min(8),
 }).refine((data) => data.password === data.passwordConf, {
-    message: "Password don't match",
+    message: "Password tidak sama",
     path: ["passwordConf"]
 })
 
