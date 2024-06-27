@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
 
 const FormSignUp = () => {
     const {
@@ -23,6 +24,10 @@ const FormSignUp = () => {
 
     const [checkResponse, setCheckResponse] = useState(false);
     const router = useRouter()
+    const schemaResponse = z.object({
+        StatusCode: z.number(),
+        Message: z.string()
+    })
 
     const onSubmit: SubmitHandler<FormFieldsSignUp> = async (data) => {
         try {
@@ -40,19 +45,21 @@ const FormSignUp = () => {
                 body: JSON.stringify(responseData),
                 credentials: "include"
             })
+            const errorMessage: response = await response.json()
 
             if (response.ok) {
                 setCheckResponse(true)
             } else {
-                const errorData: response = await response.json()
-                throw new Error(JSON.stringify(errorData))
+                const message = schemaResponse.parse(errorMessage)
+                throw new Error(message.Message)
             }
         } catch (error) {
-            const errorMessage = (JSON.parse((error as Error).message) as response).Message;
-            setError("root", {
-                type: 'manual',
-                message: errorMessage
-            })
+            if (error instanceof Error) {
+                setError("root", {
+                    type: 'manual',
+                    message: error.message,
+                })
+            }
         }
     }
 

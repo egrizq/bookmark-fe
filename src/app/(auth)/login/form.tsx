@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
 
 const FormLogin = () => {
     const {
@@ -23,6 +24,10 @@ const FormLogin = () => {
 
     const router = useRouter()
     const [isRedirect, setIsRedirect] = useState<boolean>(false)
+    const schemaResponse = z.object({
+        StatusCode: z.number(),
+        Message: z.string()
+    })
 
     const onSubmit: SubmitHandler<FormFieldslogin> = async (data) => {
         try {
@@ -34,19 +39,21 @@ const FormLogin = () => {
                 body: JSON.stringify(data),
                 credentials: 'include'
             })
+            const errorMessage: response = await response.json()
 
             if (response.ok) {
                 setIsRedirect(true)
             } else {
-                const res: response = await response.json()
-                throw new Error(JSON.stringify(res))
+                const message = schemaResponse.parse(errorMessage)
+                throw new Error(message.Message)
             }
         } catch (error) {
-            const errorMessage = (JSON.parse((error as Error).message) as response).Message;
-            setError("root", {
-                type: 'manual',
-                message: errorMessage,
-            })
+            if (error instanceof Error) {
+                setError("root", {
+                    type: 'manual',
+                    message: error.message,
+                })
+            }
         }
     }
 

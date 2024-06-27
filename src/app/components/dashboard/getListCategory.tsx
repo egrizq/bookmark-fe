@@ -5,8 +5,24 @@ import { z } from "zod"
 interface typeBoxBookmarks {
     CategoryName: string
     Number: number
+    Username?: string
 }
 
+const BoxBookmarks = ({ CategoryName, Number, Username }: typeBoxBookmarks) => {
+    const router = useRouter()
+
+    return (
+        <>
+            <button onClick={() => router.push(`/${Username}/${CategoryName}`)}
+                className="border-b-1 border-zinc-400 w-10/12 hover:scale-105 duration-100">
+                <div className="flex flex-row m-2 justify-between items-center">
+                    <p className="font-semibold text-xl">{CategoryName.replaceAll("_", " ")}</p>
+                    <p className="text-sm">{Number} Item</p>
+                </div>
+            </button>
+        </>
+    )
+}
 
 const ListBookmarkByCategory = ({ status, username }: { status: boolean, username: string }) => {
     const [category, setCategory] = useState<typeBoxBookmarks[]>([])
@@ -39,23 +55,7 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
             })
     }, [])
 
-    const router = useRouter()
-
-    const BoxBookmarks = ({ CategoryName, Number }: typeBoxBookmarks) => {
-        return (
-            <>
-                <button onClick={() => router.push(`/${username}/${CategoryName}`)}
-                    className="border-b-1 border-zinc-400 w-10/12 hover:scale-105 duration-100">
-                    <div className="flex flex-row m-2 justify-between items-center">
-                        <p className="font-semibold text-xl">{CategoryName.replace("_", " ")}</p>
-                        <p className="text-sm">{Number} Item</p>
-                    </div>
-                </button>
-            </>
-        )
-    }
-
-    if (status && category !== null) {
+    if (status && category.length !== 0) {
         return (
             <>
                 <div className="flex flex-col py-4 mx-4">
@@ -65,6 +65,7 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
                         {category.map((bookmark, index) => (
                             <BoxBookmarks
                                 key={index}
+                                Username={username}
                                 CategoryName={bookmark.CategoryName}
                                 Number={bookmark.Number}
                             />

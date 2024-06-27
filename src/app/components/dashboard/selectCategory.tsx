@@ -16,6 +16,11 @@ interface typeOption {
 const Option = ({ setVal }: typeOption) => {
     const [category, setCategory] = useState<string[]>([]);
 
+    const schemaResponse = z.object({
+        StatusCode: z.number(),
+        Message: z.string().array()
+    })
+
     useEffect(() => {
         fetch("http://localhost:8000/bookmark/category/list", {
             method: "GET",
@@ -28,7 +33,8 @@ const Option = ({ setVal }: typeOption) => {
                 }
             })
             .then((data) => {
-                setCategory(data.Message)
+                const res = schemaResponse.parse(data)
+                setCategory(res.Message)
             })
             .catch((err) => {
                 // pass err
@@ -41,7 +47,7 @@ const Option = ({ setVal }: typeOption) => {
                 className="border text-gray-800 text-sm border-zinc-300 rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="#">Pilih Kategori</option>
                 {category.map((item) => (
-                    <option key={item} value={item.replace(" ", "_")}>
+                    <option key={item} value={item.replaceAll(" ", "_")}>
                         {item}
                     </option>
                 ))}
@@ -72,7 +78,7 @@ const SelectCatergory = ({ status, setValue }: typeCategory) => {
     const onSubmit: SubmitHandler<FormFieldsCategory> = async (data) => {
         try {
             const formatData: FormFieldsCategory = {
-                newcategory: data.newcategory.replace(" ", "_")
+                newcategory: data.newcategory.replaceAll(" ", "_")
             }
             const response = await fetch("http://localhost:8000/bookmark/category/insert", {
                 method: "POST",

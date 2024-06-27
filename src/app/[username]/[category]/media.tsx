@@ -46,7 +46,6 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
             })
             .then((data) => {
                 const res = schemaResponse.parse(data)
-                console.log(data)
                 setUrl(res.Message)
             })
             .catch((e) => {
@@ -100,7 +99,7 @@ export const TitleBookmarks = ({ category }: { category: string }) => {
     return (
         <>
             <div className="flex justify-between align-items">
-                <p className="text-2xl font-bold">{category.replace("_", " ")}</p>
+                <p className="text-2xl font-bold">{category.replaceAll("_", " ")}</p>
 
                 <button onClick={() => router.push("/")}
                     className="border border-zinc-300 py-1 px-2 rounded-md hover:bg-zinc-200">
