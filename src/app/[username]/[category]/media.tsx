@@ -1,9 +1,9 @@
 "use client"
 
 import { TweetPage } from "@/app/components/dashboard/configSocialMedia";
+import Youtube from "@/app/components/youtube";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { InstagramEmbed, YouTubeEmbed, TikTokEmbed } from "react-social-media-embed";
 import { Spotify } from "react-spotify-embed";
 
 interface typeData {
@@ -21,7 +21,7 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
     console.log(category, username)
 
     useEffect(() => {
-        fetch(`http://localhost:8000/bookmark/get/${username}/${category}`, {
+        fetch(`http://localhost:8000/get/${username}/${category}`, {
             method: "GET",
             credentials: "include"
         })
@@ -33,11 +33,9 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
             })
             .then((message) => {
                 setUrl(message.Message)
-                console.log(message.Message)
             })
             .catch((e) => {
                 // pass
-                console.log(e)
             })
     }, [])
 
@@ -51,16 +49,10 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
             media: <TweetPage url={url} />
         })
         sosmedMap.set("sp", {
-            media: <Spotify link={url} />
-        })
-        sosmedMap.set("ig", {
-            media: <InstagramEmbed url={url} />
+            media: <Spotify width={550} link={url} />
         })
         sosmedMap.set("yt", {
-            media: <YouTubeEmbed url={url} />
-        })
-        sosmedMap.set("tt", {
-            media: <TikTokEmbed url={url} />
+            media: <Youtube url={url} />
         })
 
         const selectedMedia = sosmedMap.get(media);
@@ -93,7 +85,7 @@ export const TitleBookmarks = ({ category }: { category: string }) => {
     return (
         <>
             <div className="flex justify-between align-items">
-                <p className="text-2xl font-bold">{category}</p>
+                <p className="text-2xl font-bold">{category.replace("_", " ")}</p>
 
                 <button onClick={() => router.push("/")}
                     className="border border-zinc-300 py-1 px-2 rounded-md hover:bg-zinc-200">

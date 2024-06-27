@@ -1,39 +1,33 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { response } from "@/app/auth/definitions";
 
 const CheckUserExist = ({ username }: { username: string }) => {
     const router = useRouter();
-    const [status, setStatus] = useState<boolean>()
+    const [status, setStatus] = useState<boolean>(false)
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:8000/logout", {
-                method: "POST",
+            const res = await fetch("http://localhost:8000/bookmark/logout", {
+                method: "GET",
                 credentials: "include",
-            })
-            const data: response = await response.json()
-            const { Message } = data
+            });
 
-            if (response.ok) {
-                console.log(Message)
-            } else {
-                throw new Error(Message)
+            if (!res.ok) {
+                const errorMessage = await res.json();
+                throw new Error(errorMessage);
             }
-        } catch (error) {
-            console.log(error)
+        } catch (err: any) {
+            alert(err.Message);
         }
-    }
+    };
 
     useEffect(() => {
         if (status) {
             handleLogout()
             router.push("/login")
         }
-
-    }, [status, setStatus])
-
+    }, [status])
 
     if (username?.length >= 8) {
         return (
@@ -47,8 +41,7 @@ const CheckUserExist = ({ username }: { username: string }) => {
                     <DropdownMenu aria-label="Static Actions">
                         <DropdownItem textValue="pf">Profile</DropdownItem>
                         <DropdownItem textValue="logout">
-                            <button
-                                onClick={() => setStatus(true)}>
+                            <button onClick={() => setStatus(!status)}>
                                 Log Out
                             </button>
                         </DropdownItem>
@@ -56,10 +49,6 @@ const CheckUserExist = ({ username }: { username: string }) => {
                 </Dropdown>
             </>
         )
-    }
-
-    if (status) {
-        router.refresh()
     }
 
     return (

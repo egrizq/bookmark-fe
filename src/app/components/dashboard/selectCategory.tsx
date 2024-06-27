@@ -21,15 +21,16 @@ const Option = ({ setVal }: typeOption) => {
             credentials: "include"
         })
             .then((res) => {
-                if (!res.ok) throw new Error("Failed to fetch!")
-                return res.json()
+                if (res.ok) {
+                    const data = res.json()
+                    return data
+                }
             })
             .then((data) => {
                 setCategory(data.Message)
             })
             .catch((err) => {
-                console.error(err)
-                alert(err.Message)
+
             })
     }, [])
 
@@ -39,7 +40,7 @@ const Option = ({ setVal }: typeOption) => {
                 className="border text-gray-800 text-sm border-zinc-300 rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="#">Pilih Kategori</option>
                 {category.map((item) => (
-                    <option key={item} value={item}>
+                    <option key={item} value={item.replace(" ", "_")}>
                         {item}
                     </option>
                 ))}
@@ -64,21 +65,24 @@ const SelectCatergory = ({ status, setValue }: typeCategory) => {
 
     const onSubmit: SubmitHandler<FormFieldsCategory> = async (data) => {
         try {
-            const response = await fetch("http://localhost:8000/bookmark/category/add", {
+            const formatData: FormFieldsCategory = {
+                newcategory: data.newcategory.replace(" ", "_")
+            }
+            const response = await fetch("http://localhost:8000/bookmark/category/insert", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(formatData),
                 credentials: "include"
             })
 
             if (!response.ok) {
                 const errorMessage = await response.json()
                 throw new Error(JSON.stringify(errorMessage))
-            } else {
-                isAddCategory(!addCategory)
             }
+
+            isAddCategory(!addCategory)
         } catch (error) {
             const errorMessage = (JSON.parse((error as Error).message) as response).Message;
             setError("newcategory", {

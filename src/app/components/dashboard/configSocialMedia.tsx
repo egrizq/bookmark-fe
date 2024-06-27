@@ -20,7 +20,7 @@ export const TweetPage = ({ url }: typeURL) => {
     }, [url]);
 
     return (
-        <div className="light" >
+        <div className="light flex justify-center w-full" >
             <Tweet id={tweetId!} />
         </div>
     );

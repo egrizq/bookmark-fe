@@ -22,6 +22,7 @@ const FormSignUp = () => {
     })
 
     const [checkResponse, setCheckResponse] = useState(false);
+    const router = useRouter()
 
     const onSubmit: SubmitHandler<FormFieldsSignUp> = async (data) => {
         try {
@@ -58,7 +59,6 @@ const FormSignUp = () => {
     // redirect
     useEffect(() => {
         if (checkResponse) {
-            const router = useRouter()
             router.push("/")
         }
     }, [checkResponse, setCheckResponse])

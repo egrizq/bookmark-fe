@@ -8,9 +8,7 @@ interface typeSosmed {
 const sosmed = [
     { value: 'tw', label: 'X / Twitter' },
     { value: 'sp', label: 'Spotify' },
-    { value: 'ig', label: 'Instagram' },
     { value: 'yt', label: 'Youtube' },
-    { value: 'tt', label: 'TikTok' },
 ];
 
 const SelectSocialMedia = ({ id, setValue }: typeSosmed) => {

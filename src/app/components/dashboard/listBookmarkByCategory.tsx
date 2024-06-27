@@ -9,7 +9,7 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
     const [category, setCategory] = useState<typeBoxBookmarks[]>([])
 
     useEffect(() => {
-        fetch("http://localhost:8000/bookmark/category/list/number", {
+        fetch("http://localhost:8000/bookmark/list", {
             method: "GET",
             credentials: "include",
         })
@@ -35,16 +35,15 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
                 <button onClick={() => router.push(`/${username}/${CategoryName}`)}
                     className="border-b-1 border-zinc-400 w-10/12 hover:scale-105 duration-100">
                     <div className="flex flex-row m-2 justify-between items-center">
-                        <p className="font-semibold text-xl">{CategoryName}</p>
+                        <p className="font-semibold text-xl">{CategoryName.replace("_", " ")}</p>
                         <p className="text-sm">{Number} Item</p>
                     </div>
                 </button>
             </>
         )
     }
-    console.log(category)
 
-    if (status) {
+    if (status && category !== null) {
         return (
             <>
                 <div className="flex flex-col py-4 mx-4">
@@ -62,8 +61,9 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
                 </div>
             </>
         )
-
     }
+
+    return null
 }
 
 export default ListBookmarkByCategory

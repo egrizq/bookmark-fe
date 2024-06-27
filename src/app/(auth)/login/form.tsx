@@ -5,7 +5,7 @@ import ButtonSubmit from "@/app/components/button";
 import InputField from "@/app/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 const FormLogin = () => {
@@ -50,9 +50,11 @@ const FormLogin = () => {
         }
     }
 
-    if (isRedirect) {
-        router.push("/")
-    }
+    useEffect(() => {
+        if (isRedirect) {
+            router.push("/")
+        }
+    }, [isRedirect])
 
     return (
         <>

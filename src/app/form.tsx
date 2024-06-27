@@ -9,6 +9,7 @@ import { Spotify } from "react-spotify-embed"
 import { TweetPage } from "./components/dashboard/configSocialMedia"
 import { ErrorLink } from "./components/dashboard/text"
 import { SelectCatergory } from "./components/dashboard/selectCategory"
+import Youtube from "./components/youtube"
 
 interface statusForm {
     status: boolean;
@@ -35,23 +36,15 @@ export const FormInput = ({ status }: statusForm) => {
         link: ["open.spotify.com"],
         media: <Spotify link={url} />
     })
-    sosmedMap.set("ig", {
-        link: ["instagram.com"],
-        media: <InstagramEmbed url={url} width={450} />
-    })
     sosmedMap.set("yt", {
         link: ["youtube.com", "youtu.be"],
-        media: <YouTubeEmbed url={url} width={450} height={220} />
-    })
-    sosmedMap.set("tt", {
-        link: ["tiktok.com"],
-        media: <TikTokEmbed url={url} width={450} />
+        media: <Youtube url={url} />
     })
 
     useEffect(() => {
         let err = <ErrorLink />
 
-        if (url.length > 8) {
+        if (url.includes("https://")) {
             let sosmedKey = sosmedMap.get(sosmed)
             let check = sosmedKey?.link.some(domain => url.includes(domain))
             if (check) {
@@ -73,7 +66,7 @@ export const FormInput = ({ status }: statusForm) => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/bookmark/add", {
+            const response = await fetch("http://localhost:8000/bookmark/insert", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

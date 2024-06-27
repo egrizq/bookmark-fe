@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Title } from "./components/dashboard/text";
-import CheckUserExist from "./components/dashboard/checkUserExist";
+import CheckUserExist from "./components/dashboard/checkUserExistAndLogout";
 import { FormInput } from "./form";
 import ListBookmarkByCategory from "./components/dashboard/listBookmarkByCategory";
 

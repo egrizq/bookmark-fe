@@ -13,7 +13,7 @@ export type FormFieldslogin = z.infer<typeof schemaLogin>;
 
 export const schemaCategory = z.object({
     newcategory: z.string().min(2, { message: "Minimal 2 karakter untuk penamaan" })
-        .max(15, { message: "Maksimal 15 karakter untuk penamaan" }).toLowerCase()
+        .max(15, { message: "Maksimal 15 karakter untuk penamaan" })
 })
 
 export type FormFieldsCategory = z.infer<typeof schemaCategory>;
