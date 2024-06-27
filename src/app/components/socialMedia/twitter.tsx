@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Tweet } from 'react-tweet';
-import { typeURL } from '../../auth/definitions';
+import { typeURL } from '../../type/definitions';
 
 export const getTweetIdFromUrl = (url: string): string | null => {
     const regex = /status\/(\d+)/;
@@ -8,7 +8,7 @@ export const getTweetIdFromUrl = (url: string): string | null => {
     return match ? match[1] : null;
 };
 
-export const TweetPage = ({ url }: typeURL) => {
+export const TweetEmbed = ({ url }: typeURL) => {
     const [tweetId, setTweetId] = useState<string>();
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export const TweetPage = ({ url }: typeURL) => {
     }, [url]);
 
     return (
-        <div className="light flex justify-center w-full" >
+        <div className="light flex justify-center w-10/12">
             <Tweet id={tweetId!} />
         </div>
     );

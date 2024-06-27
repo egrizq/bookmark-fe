@@ -1,10 +1,10 @@
 "use client"
 
-import { TweetPage } from "@/app/components/dashboard/configSocialMedia";
-import Youtube from "@/app/components/youtube";
+import SpotifyEmbed from "@/app/components/socialMedia/spotify";
+import { TweetEmbed } from "@/app/components/socialMedia/twitter";
+import Youtube from "@/app/components/socialMedia/youtube";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Spotify } from "react-spotify-embed";
 
 interface typeData {
     username: string
@@ -46,10 +46,10 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
         let sosmedMap: Map<string, typeCategory> = new Map()
 
         sosmedMap.set("tw", {
-            media: <TweetPage url={url} />
+            media: <TweetEmbed url={url} />
         })
         sosmedMap.set("sp", {
-            media: <Spotify width={550} link={url} />
+            media: <SpotifyEmbed url={url} />
         })
         sosmedMap.set("yt", {
             media: <Youtube url={url} />

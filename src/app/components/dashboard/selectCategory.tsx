@@ -1,4 +1,4 @@
-import { FormFieldsCategory, response, schemaCategory } from "@/app/auth/definitions";
+import { FormFieldsCategory, response, schemaCategory } from "@/app/type/definitions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -30,7 +30,7 @@ const Option = ({ setVal }: typeOption) => {
                 setCategory(data.Message)
             })
             .catch((err) => {
-
+                // pass err
             })
     }, [])
 

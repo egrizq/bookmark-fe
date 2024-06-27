@@ -12,13 +12,11 @@ const CheckUserExist = ({ username }: { username: string }) => {
                 method: "GET",
                 credentials: "include",
             });
-
             if (!res.ok) {
-                const errorMessage = await res.json();
-                throw new Error(errorMessage);
+                throw new Error('Logout failed. Please try again.');
             }
-        } catch (err: any) {
-            alert(err.Message);
+        } catch (err) {
+            alert(err);
         }
     };
 

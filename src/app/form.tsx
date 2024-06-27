@@ -1,15 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import ButtonStatus from "./components/dashboard/buttonSubmit"
+import ButtonStatus from "./components/dashboard/button"
 import SelectSocialMedia from "./components/dashboard/selectSocialMedia"
-import { response, requestBookmarks } from "./auth/definitions"
-import { InstagramEmbed, YouTubeEmbed, TikTokEmbed } from "react-social-media-embed"
-import { Spotify } from "react-spotify-embed"
-import { TweetPage } from "./components/dashboard/configSocialMedia"
-import { ErrorLink } from "./components/dashboard/text"
+import { response, requestBookmarks } from "./type/definitions"
+import { TweetEmbed } from "./components/socialMedia/twitter"
 import { SelectCatergory } from "./components/dashboard/selectCategory"
-import Youtube from "./components/youtube"
+import YoutubeEmbed from "./components/socialMedia/youtube"
+import SpotifyEmbed from "./components/socialMedia/spotify"
+import { Warning } from "./components/dashboard/warning"
 
 interface statusForm {
     status: boolean;
@@ -30,30 +29,27 @@ export const FormInput = ({ status }: statusForm) => {
 
     sosmedMap.set("tw", {
         link: ["twitter.com", "x.com"],
-        media: <TweetPage url={url} />
+        media: <TweetEmbed url={url} />
     })
     sosmedMap.set("sp", {
         link: ["open.spotify.com"],
-        media: <Spotify link={url} />
+        media: <SpotifyEmbed url={url} />
     })
     sosmedMap.set("yt", {
         link: ["youtube.com", "youtu.be"],
-        media: <Youtube url={url} />
+        media: <YoutubeEmbed url={url} />
     })
 
     useEffect(() => {
-        let err = <ErrorLink />
+        const err = <Warning />;
 
         if (url.includes("https://")) {
-            let sosmedKey = sosmedMap.get(sosmed)
-            let check = sosmedKey?.link.some(domain => url.includes(domain))
-            if (check) {
-                setReturnedSosmed(sosmedKey?.media)
-            } else {
-                setReturnedSosmed(err)
-            }
+            const sosmedKey = sosmedMap.get(sosmed);
+            const isValidDomain = sosmedKey?.link.some(domain => url.includes(domain));
+
+            setReturnedSosmed(isValidDomain ? sosmedKey?.media : err);
         } else {
-            setReturnedSosmed(err)
+            setReturnedSosmed(err);
         }
 
     }, [url, sosmed])

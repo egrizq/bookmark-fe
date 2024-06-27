@@ -1,8 +1,8 @@
 "use client"
 
-import { FormFieldsSignUp, schemaSignUp, bodyRequest, response } from "@/app/auth/definitions";
-import ButtonSubmit from "@/app/components/button";
-import InputField from "@/app/components/input";
+import { FormFieldsSignUp, schemaSignUp, bodyRequest, response } from "@/app/type/definitions";
+import ButtonSubmit from "@/app/components/auth/button";
+import InputField from "@/app/components/auth/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

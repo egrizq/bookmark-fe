@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { Title } from "./components/dashboard/text";
+import { Title } from "./components/dashboard/title";
 import CheckUserExist from "./components/dashboard/checkUserExistAndLogout";
 import { FormInput } from "./form";
-import ListBookmarkByCategory from "./components/dashboard/listBookmarkByCategory";
+import ListBookmarkByCategory from "./components/dashboard/getListCategory";
 
 export default function Main() {
     const [username, setUsername] = useState<string>('')

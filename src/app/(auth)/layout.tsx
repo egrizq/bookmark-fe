@@ -1,4 +1,4 @@
-import NavBar from "../components/navbar";
+import NavBar from "../components/auth/navbar";
 
 type AuthLayoutProps = {
     children: React.ReactNode;
