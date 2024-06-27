@@ -5,10 +5,16 @@ import { Title } from "./components/dashboard/title";
 import CheckUserExist from "./components/dashboard/checkUserExistAndLogout";
 import { FormInput } from "./form";
 import ListBookmarkByCategory from "./components/dashboard/getListCategory";
+import { z } from "zod";
 
 export default function Main() {
     const [username, setUsername] = useState<string>('')
     const [status, setStatus] = useState<boolean>(false)
+
+    const schemaResponse = z.object({
+        StatusCode: z.number(),
+        Message: z.string()
+    })
 
     useEffect(() => {
         fetch("http://localhost:8000/bookmark/page", {
@@ -22,7 +28,8 @@ export default function Main() {
                 }
             })
             .then((user) => {
-                setUsername(user.Message)
+                const res = schemaResponse.parse(user)
+                setUsername(res.Message)
                 setStatus(true)
             })
             .catch((e) => {

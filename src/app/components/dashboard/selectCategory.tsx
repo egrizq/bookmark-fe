@@ -2,6 +2,7 @@ import { FormFieldsCategory, response, schemaCategory } from "@/app/type/definit
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 
 interface typeCategory {
     status: boolean;
@@ -63,6 +64,11 @@ const SelectCatergory = ({ status, setValue }: typeCategory) => {
         resolver: zodResolver(schemaCategory),
     });
 
+    const schemaResponseError = z.object({
+        StatusCode: z.number(),
+        Message: z.string()
+    })
+
     const onSubmit: SubmitHandler<FormFieldsCategory> = async (data) => {
         try {
             const formatData: FormFieldsCategory = {
@@ -78,16 +84,20 @@ const SelectCatergory = ({ status, setValue }: typeCategory) => {
             })
 
             if (!response.ok) {
-                const errorMessage = await response.json()
-                throw new Error(JSON.stringify(errorMessage))
+                const res = await response.json()
+                const errorMessage = schemaResponseError.parse(res)
+                console.log(errorMessage)
+
+                throw new Error(errorMessage.Message)
             }
 
             isAddCategory(!addCategory)
         } catch (error) {
-            const errorMessage = (JSON.parse((error as Error).message) as response).Message;
-            setError("newcategory", {
-                message: errorMessage
-            })
+            if (error instanceof Error) {
+                setError("newcategory", {
+                    message: error.message
+                })
+            }
         }
     }
 

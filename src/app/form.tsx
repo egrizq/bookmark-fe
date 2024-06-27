@@ -9,6 +9,7 @@ import { SelectCatergory } from "./components/dashboard/selectCategory"
 import YoutubeEmbed from "./components/socialMedia/youtube"
 import SpotifyEmbed from "./components/socialMedia/spotify"
 import { Warning } from "./components/dashboard/warning"
+import { z } from "zod"
 
 interface statusForm {
     status: boolean;
@@ -61,6 +62,11 @@ export const FormInput = ({ status }: statusForm) => {
             category: category
         }
 
+        const schemaResponse = z.object({
+            StatusCode: z.number(),
+            Message: z.string()
+        })
+
         try {
             const response = await fetch("http://localhost:8000/bookmark/insert", {
                 method: "POST",
@@ -72,11 +78,11 @@ export const FormInput = ({ status }: statusForm) => {
             })
             if (!response.ok) {
                 const errorData: response = await response.json()
-                throw new Error(JSON.stringify(errorData))
+                return errorData
             }
         } catch (error) {
-            const errorMessage = (JSON.parse((error as Error).message) as response).Message;
-            alert(errorMessage)
+            const errorMessage = schemaResponse.parse(error)
+            alert(errorMessage.Message)
         }
     }
 

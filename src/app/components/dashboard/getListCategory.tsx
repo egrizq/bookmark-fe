@@ -1,12 +1,23 @@
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
+import { z } from "zod"
+
+interface typeBoxBookmarks {
+    CategoryName: string
+    Number: number
+}
+
 
 const ListBookmarkByCategory = ({ status, username }: { status: boolean, username: string }) => {
-    interface typeBoxBookmarks {
-        CategoryName: string
-        Number: number
-    }
     const [category, setCategory] = useState<typeBoxBookmarks[]>([])
+
+    const schemaResponse = z.object({
+        StatusCode: z.number(),
+        Message: z.array(z.object({
+            CategoryName: z.string(),
+            Number: z.number()
+        }))
+    })
 
     useEffect(() => {
         fetch("http://localhost:8000/bookmark/list", {
@@ -15,12 +26,13 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
         })
             .then((res) => {
                 if (res.ok) {
-                    const user = res.json()
-                    return user
+                    const data = res.json()
+                    return data
                 }
             })
-            .then((category) => {
-                setCategory(category.Message)
+            .then((data) => {
+                const res = schemaResponse.parse(data)
+                setCategory(res.Message)
             })
             .catch((e) => {
                 // pass

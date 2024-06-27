@@ -5,6 +5,7 @@ import { TweetEmbed } from "@/app/components/socialMedia/twitter";
 import Youtube from "@/app/components/socialMedia/youtube";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 
 interface typeData {
     username: string
@@ -16,9 +17,21 @@ interface typeMedia {
     url: string
 }
 
+interface typeResponseBookmarks {
+    Url: string
+    Social: string
+}
+
 const GetBookmarksByCategory = ({ username, category }: typeData) => {
-    const [url, setUrl] = useState<string[]>([])
-    console.log(category, username)
+    const [url, setUrl] = useState<typeResponseBookmarks[]>([])
+
+    const schemaResponse = z.object({
+        StatusCode: z.number(),
+        Message: z.array(z.object({
+            Url: z.string(),
+            Social: z.string()
+        }))
+    })
 
     useEffect(() => {
         fetch(`http://localhost:8000/get/${username}/${category}`, {
@@ -27,12 +40,14 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
         })
             .then((res) => {
                 if (res.ok) {
-                    const message = res.json()
-                    return message
+                    const data = res.json()
+                    return data
                 }
             })
-            .then((message) => {
-                setUrl(message.Message)
+            .then((data) => {
+                const res = schemaResponse.parse(data)
+                console.log(data)
+                setUrl(res.Message)
             })
             .catch((e) => {
                 // pass
