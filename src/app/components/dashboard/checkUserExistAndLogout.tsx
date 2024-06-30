@@ -1,39 +1,9 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { z } from "zod";
+import { LogoutButton } from "./logout";
 
 const CheckUserExist = ({ username }: { username: string }) => {
     const router = useRouter();
-    const [status, setStatus] = useState<boolean>(false)
-
-    // const schemaResponse = z.object({
-    //     StatusCode: z.number(),
-    //     Message: z.string()
-    // })
-
-    const handleLogout = async () => {
-        try {
-            const res = await fetch("http://localhost:8000/bookmark/logout", {
-                method: "GET",
-                credentials: "include",
-            });
-            if (!res.ok) {
-                throw new Error('Logout failed. Please try again.');
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                alert(err.message);
-            }
-        }
-    };
-
-    useEffect(() => {
-        if (status) {
-            handleLogout()
-            router.push("/login")
-        }
-    }, [status])
 
     if (username?.length >= 8) {
         return (
@@ -47,9 +17,7 @@ const CheckUserExist = ({ username }: { username: string }) => {
                     <DropdownMenu aria-label="Static Actions">
                         <DropdownItem textValue="pf">Profile</DropdownItem>
                         <DropdownItem textValue="logout">
-                            <button onClick={() => setStatus(!status)}>
-                                Log Out
-                            </button>
+                            <LogoutButton />
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>

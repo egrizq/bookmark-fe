@@ -17,7 +17,7 @@ export default function Main() {
     })
 
     useEffect(() => {
-        fetch("http://localhost:8000/bookmark/page", {
+        fetch("http://localhost:8000/page", {
             method: "GET",
             credentials: "include",
         })

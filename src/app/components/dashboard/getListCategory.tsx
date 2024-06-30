@@ -14,7 +14,7 @@ const BoxBookmarks = ({ CategoryName, Number, Username }: typeBoxBookmarks) => {
     return (
         <>
             <button onClick={() => router.push(`/${Username}/${CategoryName}`)}
-                className="border-b-1 border-zinc-400 w-10/12 hover:scale-105 duration-100">
+                className="border-b-1 border-zinc-300 w-10/12 hover:scale-105 duration-100">
                 <div className="flex flex-row m-2 justify-between items-center">
                     <p className="font-semibold text-xl">{CategoryName.replaceAll("_", " ")}</p>
                     <p className="text-sm">{Number} Item</p>
