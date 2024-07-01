@@ -59,7 +59,7 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
         return (
             <>
                 <div className="flex flex-col py-4 mx-4">
-                    <p className="text-2xl font-bold pb-5">List Bookmark-ku</p>
+                    <p className="text-2xl font-bold pb-5">Bookmark-ku</p>
 
                     <div className="flex flex-col items-center space-y-5">
                         {category.map((bookmark, index) => (

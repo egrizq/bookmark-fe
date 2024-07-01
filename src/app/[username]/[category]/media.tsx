@@ -97,20 +97,21 @@ const GetBookmarksByCategory = ({ username, category }: typeData) => {
                             url={data.Url}
                             media={data.Social} />
 
-                        <div className="pt-5">
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <button className="text-xl font-bold  text-zinc-800">
-                                        <img src="/ellipsi.svg" width={25} />
-                                    </button>
-                                </DropdownTrigger>
+                        <div className="pt-7">
+                            <DeleteBookmarks id={data.Id} username={username} />
 
+                            {/* <Dropdown>
+                                <DropdownTrigger>
+                                <button className="text-xl font-bold  text-zinc-800">
+                                <img src="/ellipsi.svg" width={25} />
+                                </button>
+                                </DropdownTrigger>
+                                
                                 <DropdownMenu aria-label="Static Actions">
                                     <DropdownItem textValue="delete">
-                                        <DeleteBookmarks id={data.Id} username={username} />
                                     </DropdownItem>
                                 </DropdownMenu>
-                            </Dropdown>
+                            </Dropdown> */}
                         </div>
                     </div>
                 ))}
