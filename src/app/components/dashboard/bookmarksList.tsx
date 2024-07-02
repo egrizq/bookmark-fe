@@ -3,12 +3,13 @@ import { useState, useEffect } from "react"
 import { z } from "zod"
 
 interface typeBoxBookmarks {
-    CategoryName: string
-    Number: number
+    Hour: string,
+    Date: string,
+    CategoryName: string,
     Username?: string
 }
 
-const BoxBookmarks = ({ CategoryName, Number, Username }: typeBoxBookmarks) => {
+const BoxBookmarks = ({ CategoryName, Hour, Date, Username }: typeBoxBookmarks) => {
     const router = useRouter()
 
     return (
@@ -18,9 +19,13 @@ const BoxBookmarks = ({ CategoryName, Number, Username }: typeBoxBookmarks) => {
                 <div className="flex flex-row m-2 justify-between items-center ">
                     <div className="flex flex-row">
                         <img src="/folder2.svg" width={25} className="pr-2" />
-                        <p className="font-semibold text-xl">{CategoryName.replaceAll("_", " ")}</p>
+                        <p className="">{CategoryName.replaceAll("_", " ")}</p>
                     </div>
-                    <p className="text-sm">01 Jul 2024</p>
+                    <div className="flex flex-row space-x-1 text-xs">
+                        <p>{Hour}</p>
+                        <p>·</p>
+                        <p>{Date}</p>
+                    </div>
                 </div>
             </button>
         </>
@@ -33,9 +38,10 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
     const schemaResponse = z.object({
         StatusCode: z.number(),
         Message: z.array(z.object({
+            Hour: z.string(),
+            Date: z.string(),
             CategoryName: z.string(),
-            Number: z.number()
-        }))
+        })),
     })
 
     useEffect(() => {
@@ -50,8 +56,9 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
                 }
             })
             .then((data) => {
-                const res = schemaResponse.parse(data)
-                setCategory(res.Message)
+                const { Message } = schemaResponse.parse(data)
+                console.log("message", Message)
+                setCategory(Message)
             })
             .catch((e) => {
                 // pass
@@ -74,7 +81,8 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
                                 key={index}
                                 Username={username}
                                 CategoryName={bookmark.CategoryName}
-                                Number={bookmark.Number}
+                                Hour={bookmark.Hour}
+                                Date={bookmark.Date}
                             />
                         ))}
                     </div>
