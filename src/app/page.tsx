@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Title } from "./components/dashboard/title";
 import CheckUserExist from "./components/dashboard/checkUserExistAndLogout";
 import { FormInput } from "./form";
-import ListBookmarkByCategory from "./components/dashboard/getListCategory";
+import ListBookmarkByCategory from "./components/dashboard/bookmarksList";
 import { z } from "zod";
 
 export default function Main() {

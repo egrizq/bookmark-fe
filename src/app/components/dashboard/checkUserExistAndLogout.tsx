@@ -15,7 +15,6 @@ const CheckUserExist = ({ username }: { username: string }) => {
                         </button>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions">
-                        <DropdownItem textValue="pf">Profile</DropdownItem>
                         <DropdownItem textValue="logout">
                             <LogoutButton />
                         </DropdownItem>

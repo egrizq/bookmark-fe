@@ -41,10 +41,15 @@ const DeleteBookmarks = ({ id, username }: typeDelete) => {
 
     return (
         <>
-            <button className="text-red-700 border border-red-700 py-1 px-2 rounded-md hover:bg-red-700 hover:text-white"
+            {/* <button className="text-red-700 border border-red-700 py-1 px-2 rounded-md hover:bg-red-700 hover:text-white"
                 onClick={() => setIsFetch(!isFetch)}>
                 Delete
-            </button>
+            </button> */}
+            {/* <button
+                className="hover:scale-110 duration-100"
+                onClick={() => setIsFetch(!isFetch)}>
+                <img src="/del.svg" width={25} />
+            </button> */}
         </>
     )
 }
