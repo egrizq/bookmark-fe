@@ -26,7 +26,7 @@ const DeleteBookmarks = ({ id, username }: typeDelete) => {
                 throw new Error(Message);
             }
 
-            location.reload();
+            location.reload()
         } catch (error) {
             if (error instanceof Error) {
                 alert(error.message)
@@ -41,9 +41,9 @@ const DeleteBookmarks = ({ id, username }: typeDelete) => {
 
     return (
         <>
-            <button className="hover:scale-110 duration-100"
+            <button className="text-red-700 border border-red-700 py-1 px-2 rounded-md hover:bg-red-700 hover:text-white"
                 onClick={() => setIsFetch(!isFetch)}>
-                <img src="/delete.svg" width={25} />
+                Delete
             </button>
         </>
     )

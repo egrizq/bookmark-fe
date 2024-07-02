@@ -14,10 +14,10 @@ const BoxBookmarks = ({ CategoryName, Number, Username }: typeBoxBookmarks) => {
     return (
         <>
             <button onClick={() => router.push(`/${Username}/${CategoryName}`)}
-                className="border-b-1 border-zinc-300 w-10/12 hover:scale-105 duration-100">
+                className="border-b border-zinc-300 w-10/12">
                 <div className="flex flex-row m-2 justify-between items-center">
                     <p className="font-semibold text-xl">{CategoryName.replaceAll("_", " ")}</p>
-                    <p className="text-sm">{Number} Item</p>
+                    <p className="text-sm">{Number} Bookmarks</p>
                 </div>
             </button>
         </>
@@ -58,10 +58,8 @@ const ListBookmarkByCategory = ({ status, username }: { status: boolean, usernam
     if (status && category.length !== 0) {
         return (
             <>
-                <div className="flex flex-col py-4 mx-4">
-                    <p className="text-2xl font-bold pb-5">Bookmark-ku</p>
-
-                    <div className="flex flex-col items-center space-y-5">
+                <div className="flex flex-col py-4 mx-5">
+                    <div className="flex flex-col items-center space-y-3">
                         {category.map((bookmark, index) => (
                             <BoxBookmarks
                                 key={index}

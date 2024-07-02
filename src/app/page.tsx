@@ -25,6 +25,8 @@ export default function Main() {
                 if (res.ok) {
                     const user = res.json()
                     return user
+                } else if (!res.ok) {
+                    throw new Error("Please login to save your Bookmark")
                 }
             })
             .then((user) => {
@@ -32,23 +34,25 @@ export default function Main() {
                 setUsername(res.Message)
                 setStatus(true)
             })
-            .catch((e) => {
-                // pass
+            .catch((error) => {
+                if (error instanceof Error) {
+                    console.log(error.message)
+                }
             })
     }, [])
 
     return (
         <>
-            <nav className="border-b border-zinc-200 mx-auto w-full p-3 shadow-md">
+            <nav className="border-b border-zinc-200 bg-white mx-auto w-full p-3 shadow-md z-50 fixed">
                 <div className="flex mx-auto justify-between w-9/12">
                     <p className="text-xl font-bold py-1 text-zinc-800">Bookmark-ku</p>
                     <CheckUserExist username={username!} />
                 </div>
             </nav>
 
-            <main className="container mx-auto pt-20 py-10 text-zinc-800">
+            <main className="container mx-auto pt-36 pb-10 text-zinc-800">
                 <div className="flex justify-center">
-                    <div className="flex flex-col w-6/12">
+                    <div className="flex flex-col w-6/12 ">
 
                         <Title />
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import ButtonStatus from "./components/dashboard/button"
 import SelectSocialMedia from "./components/dashboard/selectSocialMedia"
-import { response, requestBookmarks } from "./type/definitions"
+import { requestBookmarks } from "./type/definitions"
 import { TweetEmbed } from "./components/socialMedia/twitter"
 import { SelectCatergory } from "./components/dashboard/selectCategory"
 import YoutubeEmbed from "./components/socialMedia/youtube"
@@ -20,11 +20,17 @@ interface typeCategory {
     media: JSX.Element;
 }
 
+const schemaResponse = z.object({
+    StatusCode: z.number(),
+    Message: z.string()
+})
+
 export const FormInput = ({ status }: statusForm) => {
     const [sosmed, setSosmed] = useState('tw')
     const [url, setUrl] = useState('')
     const [category, setCategory] = useState('#')
     const [returnedSosmed, setReturnedSosmed] = useState<JSX.Element>()
+    const [isSubmit, setIsSubmit] = useState(false)
 
     let sosmedMap: Map<string, typeCategory> = new Map()
 
@@ -48,6 +54,7 @@ export const FormInput = ({ status }: statusForm) => {
             const sosmedKey = sosmedMap.get(sosmed);
             const isValidDomain = sosmedKey?.link.some(domain => url.includes(domain));
 
+            setIsSubmit(isValidDomain!)
             setReturnedSosmed(isValidDomain ? sosmedKey?.media : err);
         } else {
             setReturnedSosmed(err);
@@ -55,17 +62,16 @@ export const FormInput = ({ status }: statusForm) => {
 
     }, [url, sosmed])
 
-    const onSubmit = async () => {
+
+
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
         const responseData: requestBookmarks = {
             social: sosmed,
             url: url,
             category: category
         }
-
-        const schemaResponse = z.object({
-            StatusCode: z.number(),
-            Message: z.string()
-        })
 
         try {
             const response = await fetch("http://localhost:8000/bookmark/insert", {
@@ -76,10 +82,12 @@ export const FormInput = ({ status }: statusForm) => {
                 body: JSON.stringify(responseData),
                 credentials: "include"
             })
+
             if (!response.ok) {
-                const errorData: response = await response.json()
-                return errorData
+                return response.json()
             }
+
+            location.reload()
         } catch (error) {
             const errorMessage = schemaResponse.parse(error)
             alert(errorMessage.Message)
@@ -89,21 +97,23 @@ export const FormInput = ({ status }: statusForm) => {
     return (
         <>
             <form onSubmit={onSubmit}>
-                <div className="flex flex-row justify-center drop-shadow-xl pt-12">
+                <div className="flex flex-row justify-center drop-shadow-xl pt-10">
                     <SelectSocialMedia
                         id="social"
                         setValue={(e: any) => setSosmed(e.target.value)}
                     />
 
-                    <input type="text"
+                    <input
+                        type="text"
                         className="border-t border-l border-b border-zinc-800 py-1 px-2 w-7/12"
                         placeholder="Link"
+                        value={url}
                         onChange={(e) => setUrl(e.target.value)}
                     />
 
                     <ButtonStatus
                         url={url}
-                        status={status}
+                        status={isSubmit}
                         category={category}
                     />
                 </div>
@@ -114,7 +124,7 @@ export const FormInput = ({ status }: statusForm) => {
                 setValue={(e) => setCategory(e.target.value)}
             />
 
-            <div className="flex justify-center py-5">
+            <div className="flex justify-center">
                 {returnedSosmed}
             </div>
         </>

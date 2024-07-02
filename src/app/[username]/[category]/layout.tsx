@@ -1,5 +1,3 @@
-import NavBar from "@/app/components/auth/navbar";
-
 type AuthLayoutProps = {
     children: React.ReactNode;
 };
@@ -7,7 +5,6 @@ type AuthLayoutProps = {
 export default function AuthLayout({ children }: AuthLayoutProps) {
     return (
         <>
-            <NavBar />
             {children}
         </>
     );
